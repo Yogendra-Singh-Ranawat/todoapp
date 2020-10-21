@@ -1,2 +1,2 @@
- simple web application to mamage your daily tasks.
+ simple web application to manage your daily tasks.
  
