@@ -4,6 +4,7 @@ const app = express()
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
+const userRoutes = require('./routes/user')
 
 const db = require('./models')
 const Todo = db.Todo
@@ -21,30 +22,7 @@ app.get('/', (req, res) => {
     res.send('hello world')
 })
 
-app.get('/users/login', (req, res) => {
-    res.render('login')
-})
-
-app.post('/users/login', (req, res) => {
-    res.send('login')
-})
-
-app.get('/users/register', (req, res) => {
-    res.send('register')
-})
-
-app.post('/users/register', (req, res) => {
-    User.create({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
-    })
-        .then(user => res.redirect('/'))
-})
-
-app.get('/users/logout', (req, res) => {
-    res.send('logout')
-})
+app.use('/users', userRoutes)
 
 app.listen(port, () => {
     console.log(`App is running on port ${port}!`)
