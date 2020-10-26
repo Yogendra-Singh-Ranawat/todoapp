@@ -30,16 +30,16 @@ app.post('/users/login', (req, res) => {
 })
 
 app.get('/users/register', (req, res) => {
+    res.send('register')
+})
+
+app.post('/users/register', (req, res) => {
     User.create({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password
     })
-    .then(user => res.redirect('/'))
-})
-
-app.post('/users/register', (req, res) => {
-    res.send('register')
+        .then(user => res.redirect('/'))
 })
 
 app.get('/users/logout', (req, res) => {

@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "",
-    "database": "",
+    "password": "qaz1wsx2edc3",
+    "database": "todoapp",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
