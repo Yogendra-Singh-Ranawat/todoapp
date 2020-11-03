@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
+const bcrypt = require('bcryptjs')
 
 const db = require('../models')
 const User = db.User
@@ -21,23 +22,31 @@ router.get('/register', (req, res) => {
 router.post('/register', (req, res) => {
     const { name, email, password, password2 } = req.body
     User.findOne({ where: { email: email } })
-        .then(user => {
+        .then(async (user) => {
             if (user) {
                 console.log('User already exists')
                 res.render('register', { name, email, password, password2 })
             }
             else {
-                const newUser = new User({
-                    name,
-                    email,
-                    password
-                })
-                newUser
-                    .save()
-                    .then(user => {
-                        res.redirect('/')
+                try {
+                    const salt = await bcrypt.genSalt(10)
+                    const hash = await bcrypt.hash(password, salt)
+
+                    const newUser = new User({
+                        name,
+                        email,
+                        password: hash
                     })
-                    .catch(err => console.log(err))
+                    newUser
+                        .save()
+                        .then(user => {
+                            res.redirect('/')
+                        })
+                        .catch(err => console.log(err))
+                }
+                catch (error) {
+                    console.log(error)
+                }
             }
         })
 
