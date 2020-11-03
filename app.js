@@ -38,9 +38,11 @@ app.use((req, res, next) => {
     next()
 })
 
-app.use('/', homeRoutes)
-app.use('/users', userRoutes)
+app.use(express.static('public'))
+
 app.use('/todos', todoRoutes)
+app.use('/users', userRoutes)
+app.use('/', homeRoutes)
 
 app.listen(port, () => {
     console.log(`App is running on port ${port}!`)

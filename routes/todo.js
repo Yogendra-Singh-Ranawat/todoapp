@@ -11,28 +11,78 @@ router.get('/', isAuthenticated, (req, res) => {
     res.send('list all todos')
 })
 
-router.get('/:id', isAuthenticated, (req, res) => {
-    res.send('list one todo')
-})
-
 router.get('/new', isAuthenticated, (req, res) => {
-    res.send('new todo page')
+    res.render('new')
 })
 
-router.post('/', isAuthenticated, (req, res) => {
-    res.send('new todo submit')
+router.get('/view/:id', isAuthenticated, (req, res) => {
+    User.findByPk(req.user.id)
+        .then(user => {
+            if (!user) throw new Error('user not found')
+            return Todo.findOne({
+                where: {
+                    UserId: req.user.id,
+                    Id: req.params.id
+                }
+            })
+        })
+        .then(todo => res.render('detail', { todo }))
+        .catch(error => res.status(422).json(error))
 })
 
-router.get('/:id/edit', isAuthenticated, (req, res) => {
-    res.send('edit page')
+router.post('/new', isAuthenticated, (req, res) => {
+    Todo.create({
+        name: req.body.name,
+        done: req.body.status === 'done',
+        UserId: req.user.id
+    })
+        .then(todo => res.redirect('/'))
+        .catch(error => res.status(422).json(err))
 })
 
-router.put('/:id', isAuthenticated, (req, res) => {
-    res.send('edit submit')
+router.get('/edit/:id', isAuthenticated, (req, res) => {
+    User.findByPk(req.user.id)
+        .then(user => {
+            if (!user) throw new Error('user not found')
+            return Todo.findOne({
+                where: {
+                    Id: req.params.id,
+                    UserId: req.user.id
+                }
+            })
+        })
+        .then(todo => res.render('edit', { todo }))
 })
 
-router.delete('/:id/delete', isAuthenticated, (req, res) => {
-    res.send('delete page')
+router.put('/edit/:id', isAuthenticated, (req, res) => {
+    Todo.findOne({
+        where: {
+            Id: req.params.id,
+            UserId: req.user.id
+        }
+    })
+        .then(todo => {
+            todo.name = req.body.name
+            todo.done = req.body.done === 'on'
+            return todo.save()
+        })
+        .then(todo => res.redirect(`/todos/${req.params.id}`))
+        .catch(error => res.status(422).json(error))
+})
+
+router.delete('/delete/:id', isAuthenticated, (req, res) => {
+    User.findByPk(req.user.id)
+        .then(user => {
+            if (!user) throw new Error('user not found')
+            return Todo.destroy({
+                where: {
+                    UserId: req.user.id,
+                    Id: req.params.id
+                }
+            })
+        })
+        .then(todo => res.redirect('/'))
+        .catch(error => res.status(422).json(error))
 })
 
 module.exports = router
