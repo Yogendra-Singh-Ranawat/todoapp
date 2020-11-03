@@ -12,7 +12,7 @@ router.get('/', isAuthenticated, (req, res) => {
 })
 
 router.get('/new', isAuthenticated, (req, res) => {
-    res.render('new')
+    res.render('new', { todoFormCSS: true })
 })
 
 router.get('/view/:id', isAuthenticated, (req, res) => {
@@ -26,7 +26,7 @@ router.get('/view/:id', isAuthenticated, (req, res) => {
                 }
             })
         })
-        .then(todo => res.render('detail', { todo }))
+        .then(todo => res.render('detail', { todo, detailCSS: true }))
         .catch(error => res.status(422).json(error))
 })
 
@@ -51,7 +51,7 @@ router.get('/edit/:id', isAuthenticated, (req, res) => {
                 }
             })
         })
-        .then(todo => res.render('edit', { todo }))
+        .then(todo => res.render('edit', { todo, todoFormCSS: true }))
 })
 
 router.put('/edit/:id', isAuthenticated, (req, res) => {
@@ -63,10 +63,11 @@ router.put('/edit/:id', isAuthenticated, (req, res) => {
     })
         .then(todo => {
             todo.name = req.body.name
-            todo.done = req.body.done === 'on'
+            todo.done = req.body.done === 'done'
+            todo.detail = req.body.detail
             return todo.save()
         })
-        .then(todo => res.redirect(`/todos/${req.params.id}`))
+        .then(todo => res.redirect(`/`))
         .catch(error => res.status(422).json(error))
 })
 

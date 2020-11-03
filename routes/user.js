@@ -6,7 +6,7 @@ const db = require('../models')
 const User = db.User
 
 router.get('/login', (req, res) => {
-    res.render('login')
+    res.render('login', { userCSS: true })
 })
 
 router.post('/login', passport.authenticate('local', {
@@ -15,7 +15,7 @@ router.post('/login', passport.authenticate('local', {
 }))
 
 router.get('/register', (req, res) => {
-    res.render('register')
+    res.render('register', { userCSS: true })
 })
 
 router.post('/register', (req, res) => {

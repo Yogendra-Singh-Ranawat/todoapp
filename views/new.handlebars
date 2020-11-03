@@ -6,6 +6,11 @@
                 <label for="name" class="sr-only">New todo</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter new todo">
             </div>
+            <div class="form-group">
+                <label for="detail" class="sr-only">Detail</label>
+                <textarea class="form-control" name="detail" id="detail" rows="3"
+                    placeholder="Give the task some description here...">{{todo.detail}}</textarea>
+            </div>
             <div class="btn-group btn-group-toggle mb-3 d-flex pt-1" data-toggle="buttons">
                 <label class="btn btn-sm btn-secondary">
                     <input type="radio" name="status" id="done" value="done" autocomplete="off">Done

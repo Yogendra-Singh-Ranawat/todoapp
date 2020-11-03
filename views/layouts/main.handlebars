@@ -8,9 +8,18 @@
     <link rel="stylesheet" href="/stylesheets/bootstrap.css">
     <link rel="stylesheet" href="/stylesheets/css/all.css">
     <link rel="stylesheet" href="/stylesheets/main.css">
+    {{#if indexCSS}}
     <link rel="stylesheet" href="/stylesheets/index.css">
+    {{/if}}
+    {{#if userCSS}}
     <link rel="stylesheet" href="/stylesheets/user.css">
-    <link rel="stylesheet" href="/stylesheets/new.css">
+    {{/if}}
+    {{#if todoFormCSS}}
+    <link rel="stylesheet" href="/stylesheets/todo_form.css">
+    {{/if}}
+    {{#if detailCSS}}
+    <link rel="stylesheet" href="/stylesheets/detail.css">
+    {{/if}}
     <link href="https://fonts.googleapis.com/css?family=Lobster&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Reem+Kufi&display=swap" rel="stylesheet">
     <title>Todo App</title>
@@ -29,7 +38,7 @@
                         Task</span></a>
             </li>
             <li class="nav-item ml-3">
-                <a href="/users/logout" class="log-out-btn">Log out</a>
+                <a href="/users/logout" class="log-out-btn">{{#if user}}Log out{{else}}Login Now{{/if}}</a>
             </li>
         </ul>
     </nav>
